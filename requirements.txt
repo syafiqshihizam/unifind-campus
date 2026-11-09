@@ -1,0 +1,2 @@
+# UniFind uses only the Python standard library (http.server + sqlite3).
+# No third-party packages are required.

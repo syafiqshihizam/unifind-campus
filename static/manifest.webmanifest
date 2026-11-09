@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "UniFind - Campus Found Items",
+  "short_name": "UniFind",
+  "description": "Find it. Claim it. Reunite. Campus found-items community.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f7fd",
+  "theme_color": "#385ce8",
+  "lang": "en",
+  "categories": ["education", "utilities"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

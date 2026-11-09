@@ -1,0 +1,26 @@
+CAMPUSBACK V8 -- SIMPLE STEPS
+
+1. Open CampusBack folder in VS Code.
+2. Terminal > New Terminal.
+3. First run ONLY: python seed_demo.py
+4. Start website: python server.py
+5. Visit: http://localhost:8000
+
+Demo passwords for ALL three accounts: Demo1234!
+Sara (student): sara@campus.test
+Daniel (student): daniel@campus.test
+Office staff: counter@campus.test
+
+Student UI: Community | My Activity | + Report Found Item
+Staff UI: Counter Desk
+
+To update old V7 and KEEP accounts/photos:
+STOP server > backup data/ and uploads/ > replace only:
+server.py
+static/index.html
+static/app.js
+static/styles.css
+Restart python server.py; hard-refresh Ctrl+Shift+R.
+DO NOT replace old data/ or uploads/.
+
+Full instructions: README.md

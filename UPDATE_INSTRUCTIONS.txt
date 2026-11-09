@@ -1,0 +1,21 @@
+CAMPUSBACK V6 UPDATE (FROM V5)
+
+Option A (recommended for a CLEAN demo):
+- Download FULL Project ZIP, Extract All, Open "CampusBack" in VS Code.
+- Run python seed_demo.py and python server.py.
+- Fresh records are FOUND items ONLY.
+
+Option B (keep existing students/photos/report database):
+1. Stop running website with Ctrl+C.
+2. BACK UP the full old CampusBack folder, especially data/ and uploads/.
+3. From the V6 Update ZIP, copy server.py and seed_demo.py into the old project.
+4. Copy all files in static/ into the old static/ folder, replacing originals.
+5. Don't delete data/ or uploads/.
+6. Run python server.py. Open localhost:8000 and Ctrl+Shift+R to reload.
+7. Old Lost reports remain in the database but are no longer public or reportable.
+8. Older pre-V5 claims don't appear in V6; use fresh V6 requests for the demo.
+
+IF ANYTHING FAILS:
+- Restore your backup folder.
+- Check the terminal for an error.
+- Do not run older V5 code on the upgraded live database.

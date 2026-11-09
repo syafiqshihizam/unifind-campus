@@ -1,0 +1,23 @@
+# Render Blueprint for UniFind.
+# A persistent disk keeps the SQLite database and uploaded photos across deploys/restarts.
+# Disks are only available on paid web-service plans (not Free).
+services:
+  - type: web
+    name: unifind
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python start.py
+    healthCheckPath: /api/session
+    autoDeploy: true
+    envVars:
+      - key: CAMPUSBACK_DB
+        value: /var/data/campusback.db
+      - key: CAMPUSBACK_UPLOADS
+        value: /var/data/uploads
+      - key: CAMPUSBACK_HTTPS
+        value: "1"
+    disk:
+      name: unifind-data
+      mountPath: /var/data
+      sizeGB: 1
