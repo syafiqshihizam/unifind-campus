@@ -81,7 +81,7 @@ function staffCard(r,mode){let [title,tone]=statusText[r.status]||['Pending','am
 return `<article class="request-card"><div class="request-top"><div class="request-picture">${pic(r)}</div><div class="request-info"><div class="title-line"><h3>${esc(r.item_name)}</h3>${tag(title,tone)}</div><p class="meta"><b>Counter:</b> ${esc(r.counter_location)}</p><p class="meta"><b>Finder:</b> ${esc(r.finder_name)} · <b>Claimant:</b> ${esc(r.owner_name)}</p></div></div><p class="next-step">${mode==='waiting'?'Waiting for finder to bring the physical item.':mode==='receive'?'Verify the item is physically at this counter, then confirm receipt.':mode==='release'?'Check student ID and ownership evidence, hand the item over, then confirm.':'History record — '+fmt(r.completed_at)}</p>${controls?`<div class="buttons">${controls}</div>`:''}</article>`;}
 function reportPage(){if(state.session?.user?.is_staff)return desk();if(!state.session?.authenticated){setTimeout(()=>loginModal(),0);return community();}
 return `${hero('Report a Found Item','Only report items you have found. This will appear in Community for others to view.','FOUND ITEM REPORT')}
-<div class="form-panel"><form id="reportForm"><div class="form-grid"><label>Item name<input name="name" placeholder="e.g. Black wallet" required minlength="3" maxlength="90"></label><label>Category<select name="category" required>${categories.map(x=>`<option>${x}</option>`).join('')}</select></label><label>Colour<input name="color" placeholder="e.g. Black" maxlength="40" required></label><label>Found at<select name="location">${locations.map(x=>`<option>${x}</option>`).join('')}</select></label><label>Date found<input type="date" name="event_date" value="${dateToday()}" max="${dateToday()}" required></label><label>Preferred campus counter<select name="handover">${offices.map(x=>`<option>${x}</option>`).join('')}</select></label></div><label>Description<textarea name="description" rows="3" minlength="8" maxlength="800" placeholder="Where exactly did you find it? Describe it without revealing private security details." required></textarea></label><label>Photo (optional)<input name="photo" type="file" accept="image/jpeg,image/png,image/webp"></label><div class="secret-fields"><h3>Private security question</h3><p>Only someone choosing Campus Counter will see this question. Never reveal the answer in the public description.</p><label>Question<input name="question" placeholder="e.g. How many cards are inside?" required maxlength="160"></label><label>Correct answer<input name="answer" required autocomplete="off" placeholder="Keep this answer private"></label></div><div class="buttons"><button class="primary" type="submit">Publish Found Item</button><button type="button" class="secondary" data-page="community">Cancel</button></div></form></div>`;}
+<div class="form-panel"><form id="reportForm"><div class="form-grid"><label>Item name<input name="name" placeholder="e.g. Black wallet" required minlength="3" maxlength="90"></label><label>Category<select name="category" required>${categories.map(x=>`<option>${x}</option>`).join('')}</select></label><label>Colour<input name="color" placeholder="e.g. Black" maxlength="40" required></label><label>Found at<select name="location">${locations.map(x=>`<option>${x}</option>`).join('')}</select></label><label>Date found<input type="date" name="event_date" value="${dateToday()}" max="${dateToday()}" required></label><label>Preferred campus counter<select name="handover">${offices.map(x=>`<option>${x}</option>`).join('')}</select></label></div><label>Description<textarea name="description" rows="3" minlength="8" maxlength="800" placeholder="Where exactly did you find it? Describe it without revealing private security details." required></textarea></label><div class="photo-field"><span class="photo-label">Photo (optional)</span><div class="photo-actions"><button type="button" class="secondary" data-photo="camera">📷 Take Photo</button><button type="button" class="secondary" data-photo="gallery">🖼️ Choose from Gallery</button></div><input name="photo" id="photoMain" type="file" accept="image/jpeg" hidden><input id="photoCamera" type="file" accept="image/*" capture="environment" hidden><input id="photoGallery" type="file" accept="image/*" hidden><div class="photo-preview" id="photoPreview" hidden><img alt="Selected photo preview"><div class="photo-meta"><span id="photoInfo"></span><button type="button" class="textbtn" data-photo="remove">Remove photo</button></div></div></div><div class="secret-fields"><h3>Private security question</h3><p>Only someone choosing Campus Counter will see this question. Never reveal the answer in the public description.</p><label>Question<input name="question" placeholder="e.g. How many cards are inside?" required maxlength="160"></label><label>Correct answer<input name="answer" required autocomplete="off" placeholder="Keep this answer private"></label></div><div class="buttons"><button class="primary" type="submit">Publish Found Item</button><button type="button" class="secondary" data-page="community">Cancel</button></div></form></div>`;}
 function showDetails(id){let x=state.items.find(i=>i.id===id);if(!x){notify('This item is no longer available.',true);return;}state.pendingItem=x;modal(`<div class="modal-intro"><p class="eyebrow">FOUND ITEM DETAILS</p><h2>${esc(x.name)}</h2></div><div class="detail-photo">${pic(x)}</div><div class="detail-info"><p>📍 <b>Location:</b> ${esc(x.location)}</p><p>📅 <b>Date found:</b> ${fmt(x.event_date)}</p><p>👤 <b>Found by:</b> ${esc(x.reporter)}</p><p>🏷️ <b>Category:</b> ${esc(x.category)} · ${esc(x.color)}</p></div><div class="detail-description">${esc(x.description)}</div>${state.session?.user?.id===x.user_id?`<div class="notice">You posted this item. Open My Activity → Items I Found to manage it.</div>`:`<button class="primary wide" data-choose="${x.id}">Request to Collect My Item →</button>`}<p class="fineprint">Finder contact details are private until a meetup is accepted.</p>`);}
 function chooseMethod(id){state.pendingItem=state.items.find(i=>i.id===id)||state.pendingItem;if(!state.session?.authenticated){loginModal();return;}if(state.session.user.is_staff){notify('Only students can request items.',true);return;}if(state.session.user.id===state.pendingItem.user_id){notify('You cannot collect your own report.',true);return;}modal(`<div class="modal-intro"><p class="eyebrow">REQUEST COLLECTION</p><h2>How would you like to collect?</h2><p>${esc(state.pendingItem.name)}</p></div><div class="method-buttons"><button data-method="meet" class="method"><span>🤝</span><b>Meet the Finder</b><small>Send a meetup request. Finder accepts before sharing contact details.</small><span class="method-arrow">→</span></button><button data-method="counter" class="method"><span>🏢</span><b>Collect at Campus Counter</b><small>Answer a private question. Staff will release the item after checking identity.</small><span class="method-arrow">→</span></button></div>`);}
 async function beginMethod(method){if(!state.pendingItem)return;state.pendingMethod=method;if(method==='meet'){try{const z=await request('/api/pickups',{found_id:state.pendingItem.id,method:'meet'},'POST');await refresh();state.activity='collect';state.page='activity';closeModal();render();notify('Meetup request sent. Check My Activity → I Want to Collect.');}catch(e){notify(e.message,true);}return;}
@@ -121,3 +121,49 @@ $('#modal').addEventListener('click',e=>{if(e.target===$('#modal'))closeModal();
 document.addEventListener('toggle',e=>{if(e.target.id==='history')state.historyOpen=e.target.open;},true);
 (async()=>{try{await refresh();render();}catch(e){$('#app').innerHTML=empty('Cannot start UniFind','Check your internet connection, then refresh the page.','⚠️');notify(e.message,true);}})();
 setInterval(async()=>{if(!state.session?.authenticated||document.hidden||$('#modal').open)return;try{await refresh();if(['activity','desk'].includes(state.page))render();else renderNav();}catch(e){}},20000);
+
+/* Photo field: take a photo with the phone camera or pick from gallery.
+   The picture is resized to a JPEG (max 1600px) before upload, because phone photos are usually larger than the server's 4 MB limit. */
+(function(){
+  async function shrink(file){
+    if(!file.type.startsWith('image/'))throw new Error('Please choose an image file.');
+    let bmp=null;
+    try{bmp=await createImageBitmap(file,{imageOrientation:'from-image'});}catch(e){}
+    if(!bmp){
+      if(file.type==='image/jpeg'&&file.size<=4*1024*1024)return file;
+      throw new Error('This photo format is not supported. Please try another photo.');
+    }
+    const r=Math.min(1,1600/Math.max(bmp.width,bmp.height));
+    const c=document.createElement('canvas');c.width=Math.round(bmp.width*r);c.height=Math.round(bmp.height*r);
+    const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(bmp,0,0,c.width,c.height);
+    if(bmp.close)bmp.close();
+    let blob=await new Promise(res=>c.toBlob(res,'image/jpeg',0.82));
+    if(blob&&blob.size>3.8*1024*1024)blob=await new Promise(res=>c.toBlob(res,'image/jpeg',0.6));
+    if(!blob||blob.size>4*1024*1024)throw new Error('Photo is too large. Please try another photo.');
+    return new File([blob],'photo.jpg',{type:'image/jpeg'});
+  }
+  function clearPhoto(){
+    const main=$('#photoMain');if(main)main.value='';
+    for(const id of ['#photoCamera','#photoGallery']){const el=$(id);if(el)el.value='';}
+    const box=$('#photoPreview');if(box){const img=box.querySelector('img');if(img&&img.src.startsWith('blob:'))URL.revokeObjectURL(img.src);img.removeAttribute('src');box.hidden=true;}
+  }
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('[data-photo]');if(!b)return;
+    const kind=b.dataset.photo;
+    if(kind==='camera')$('#photoCamera')?.click();
+    else if(kind==='gallery')$('#photoGallery')?.click();
+    else if(kind==='remove')clearPhoto();
+  });
+  document.addEventListener('change',async e=>{
+    if(!['photoCamera','photoGallery'].includes(e.target.id))return;
+    const file=e.target.files&&e.target.files[0];if(!file)return;
+    try{
+      const jpg=await shrink(file);
+      const dt=new DataTransfer();dt.items.add(jpg);$('#photoMain').files=dt.files;
+      const box=$('#photoPreview'),img=box.querySelector('img');
+      if(img.src.startsWith('blob:'))URL.revokeObjectURL(img.src);
+      img.src=URL.createObjectURL(jpg);$('#photoInfo').textContent=`Photo ready · ${(jpg.size/1024).toFixed(0)} KB`;box.hidden=false;
+    }catch(err){clearPhoto();notify(err.message,true);}
+    e.target.value='';
+  });
+})();

@@ -3,11 +3,11 @@
    - Never touches /api/* (live data, sessions and CSRF always go to the server).
    - App shell (HTML/CSS/JS/icons): network-first, cached copy used when offline.
    - Uploaded item photos: cache-first (file names are unique and never change). */
-const VERSION = 'unifind-pwa-v1';
+const VERSION = 'unifind-pwa-v2';
 const SHELL = `${VERSION}-shell`;
 const PHOTOS = `${VERSION}-photos`;
 const SHELL_URLS = [
-  '/', '/styles.css?v=10', '/app.js?v=10', '/pwa.js?v=1', '/offline.html',
+  '/', '/styles.css?v=11', '/app.js?v=11', '/pwa.js?v=1', '/offline.html',
   '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png',
   '/icons/apple-touch-icon.png', '/icons/favicon-48.png'
 ];

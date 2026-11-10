@@ -719,3 +719,13 @@ body {
 /* installed (standalone) mode */
 .is-standalone body { user-select: none; -webkit-user-select: none; }
 .is-standalone input, .is-standalone textarea { user-select: text; -webkit-user-select: text; }
+
+/* ===== Photo field (camera / gallery) ===== */
+.photo-field { display: grid; gap: 8px; }
+.photo-label { font-weight: 700; color: #334c7c; font-size: .84rem; }
+.photo-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.photo-actions button { margin: 0; }
+.photo-preview { background: #f2f6fe; border: 1px solid #e3ebfc; border-radius: 13px; padding: 10px; display: grid; gap: 8px; }
+.photo-preview img { width: 100%; max-height: 240px; object-fit: contain; border-radius: 9px; background: #fff; }
+.photo-meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: .8rem; color: #516589; }
+@media (max-width: 380px) { .photo-actions { grid-template-columns: 1fr; } }
